@@ -6,7 +6,7 @@ import SparkMD5 from "spark-md5";
 export function generateKey() {
   return customAlphabet(
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-    10
+    15
   )();
 }
 
