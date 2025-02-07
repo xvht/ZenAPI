@@ -1,6 +1,14 @@
 import crypto from "crypto";
 import hash from "hash.js";
+import { customAlphabet } from "nanoid";
 import SparkMD5 from "spark-md5";
+
+export function generateKey() {
+  return customAlphabet(
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+    10
+  )();
+}
 
 export async function sha1(data: ArrayBuffer): Promise<string> {
   try {

@@ -1,12 +1,6 @@
 import { Hono } from "hono";
-import { customAlphabet } from "nanoid"; // Added import
-import { sha256 } from "./lib/crypto";
+import { generateKey, sha256 } from "./lib/crypto";
 import { BucketResponse, Env } from "./typings/env";
-
-const generateKey = customAlphabet(
-  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-  10
-);
 
 const authenticate = () => async (c: any, next: any) => {
   const authHeader = c.req.header("Authorization");
