@@ -1,0 +1,25 @@
+{
+  "name": "zen-data",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "bundle": "bun build ./src/index.ts --outfile=dist/index.js --minify",
+    "deploy": "wrangler deploy",
+    "secret": "wrangler secret put AUTH_TOKEN"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "hash.js": "^1.1.7",
+    "hono": "^4.7.0",
+    "spark-md5": "^3.0.2",
+    "wrangler": "3.107.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250204.0",
+    "@types/node": "^22.13.1"
+  }
+}

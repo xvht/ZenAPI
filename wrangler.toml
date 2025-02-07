@@ -1,0 +1,22 @@
+name = "zerodays-r2"
+compatibility_date = "2024-11-11"
+main = "dist/index.js"
+
+compatibility_flags = [ "nodejs_compat" ]
+
+[build]
+command = "bun build ./src/index.ts --outfile=dist/index.js --minify"
+watch_dir = "src"
+
+[[routes]]
+pattern = "api.zen.xvh.lol"
+custom_domain = true
+
+
+[[r2_buckets]]
+binding = 'BUCKET'
+preview_bucket_name = 'zen'
+bucket_name = 'zen'
+
+[vars]
+NODE_ENV = "production"
