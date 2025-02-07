@@ -1,6 +1,12 @@
 import { Hono } from "hono";
+import { customAlphabet } from "nanoid"; // Added import
 import { sha256 } from "./lib/crypto";
 import { BucketResponse, Env } from "./typings/env";
+
+const generateKey = customAlphabet(
+  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+  10
+);
 
 const authenticate = () => async (c: any, next: any) => {
   const authHeader = c.req.header("Authorization");
@@ -22,15 +28,13 @@ const authenticate = () => async (c: any, next: any) => {
 
 const app = new Hono<{ Bindings: Env }>();
 
-app.get("/*", async (c) => {
+app.get("/:folder/:key", async (c) => {
   try {
-    const key = c.req.path.slice(1);
-    if (!key) {
-      return c.json({ error: true, code: 400, data: "Key is required" }, 400);
-    }
+    const folder = c.req.param("folder");
+    const key = c.req.param("key");
 
     const resultObject = (await c.env.BUCKET.get(
-      key
+      `${folder}/${key}`
     )) as unknown as BucketResponse;
 
     if (!resultObject) {
@@ -42,8 +46,8 @@ app.get("/*", async (c) => {
         error: false,
         code: 200,
         data: {
-          key, // unique key
-          url: `https://zen.xvh.lol/${key}`, // public URL
+          key: resultObject.key, // unique key
+          url: `https://zen.xvh.lol/${resultObject.key}`, // public URL
           size: resultObject.size, // bytes
           uploaded: resultObject.uploaded, // timestamp
           checksums: resultObject.checksums, // sha256 & md5
@@ -64,15 +68,12 @@ app.get("/*", async (c) => {
   }
 });
 
-app.put("/*", authenticate(), async (c) => {
+app.put("/upload/:folder", authenticate(), async (c) => {
   try {
-    const key = c.req.path.slice(1);
-    if (!key) {
-      return c.json({ error: true, code: 400, data: "Key is required" }, 400);
-    }
+    const folder = c.req.param("folder");
+    const key = `${folder}/${generateKey()}`;
 
     const body = await c.req.raw.arrayBuffer();
-
     if (!body) {
       return c.json({ error: true, code: 400, data: "Body is required" }, 400);
     }
@@ -112,20 +113,18 @@ app.put("/*", authenticate(), async (c) => {
   }
 });
 
-app.delete("/*", authenticate(), async (c) => {
+app.delete("/:folder/:key", authenticate(), async (c) => {
   try {
-    const key = c.req.path.slice(1);
-    if (!key) {
-      return c.json({ error: true, code: 400, data: "Key is required" }, 400);
-    }
+    const folder = c.req.param("folder");
+    const key = c.req.param("key");
+    const completeKey = `${folder}/${key}`;
 
-    await c.env.BUCKET.delete(key);
-
+    await c.env.BUCKET.delete(completeKey);
     return c.json(
       {
         error: false,
         code: 200,
-        data: `${key} has been deleted`,
+        data: `${completeKey} has been deleted`,
       },
       200
     );
