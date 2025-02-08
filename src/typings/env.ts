@@ -3,7 +3,6 @@ import { R2Bucket } from "@cloudflare/workers-types";
 export type Env = {
   BUCKET: R2Bucket;
   AUTH_TOKEN: string;
-  PRIVATE_KEY: string;
 };
 
 export type BucketResponse = {
