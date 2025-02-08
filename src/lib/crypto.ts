@@ -1,7 +1,5 @@
 import crypto from "crypto";
-import hash from "hash.js";
 import { customAlphabet } from "nanoid";
-import SparkMD5 from "spark-md5";
 
 export function generateKey() {
   return customAlphabet(
@@ -12,7 +10,7 @@ export function generateKey() {
 
 export async function sha1(data: ArrayBuffer): Promise<string> {
   try {
-    const hashObj = hash.sha1();
+    const hashObj = crypto.createHash("sha1");
     hashObj.update(Buffer.from(data));
     return hashObj.digest("hex");
   } catch (error) {
@@ -23,9 +21,9 @@ export async function sha1(data: ArrayBuffer): Promise<string> {
 
 export async function md5(data: ArrayBuffer): Promise<string> {
   try {
-    const spark = new SparkMD5.ArrayBuffer();
-    spark.append(data);
-    return spark.end(false);
+    const hashObj = crypto.createHash("md5");
+    hashObj.update(Buffer.from(data));
+    return hashObj.digest("hex");
   } catch (error) {
     console.error("Error in md5:", error);
     throw error;
