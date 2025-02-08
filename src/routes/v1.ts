@@ -16,6 +16,7 @@ router.put("/upload/:folder", authenticate(), async (c) => {
     }
 
     const resultObject = await c.env.BUCKET.put(key, body, {
+      // sha512: await sha512(body),
       sha256: await sha256(body),
     });
 
