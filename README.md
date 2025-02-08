@@ -1,4 +1,4 @@
-# ZenData API
+# ZenAPI
 
 A lightweight API for managing file storage with bucket-based persistence.
 
