@@ -40,3 +40,14 @@ export async function sha256(data: ArrayBuffer): Promise<string> {
     throw error;
   }
 }
+
+export async function sha512(data: ArrayBuffer): Promise<string> {
+  try {
+    const hashObj = crypto.createHash("sha512");
+    hashObj.update(Buffer.from(data));
+    return hashObj.digest("hex");
+  } catch (error) {
+    console.error("Error in sha512:", error);
+    throw error;
+  }
+}
