@@ -29,7 +29,7 @@ router.put("/upload/:folder", authenticate(), async (c) => {
         code: 200,
         data: {
           key, // unique key
-          url: `https://zen.xvh.lol/${key}`, // public URL
+          url: `https://${c.env.R2_DOMAIN}/${key}`, // public URL
           size: resultObject.size, // bytes
           uploaded: resultObject.uploaded, // timestamp
           checksums: resultObject.checksums, // sha256 & md5
@@ -73,7 +73,7 @@ router.get("/file/:folder/:key", async (c) => {
         code: 200,
         data: {
           key: resultObject.key, // unique key
-          url: `https://zen.xvh.lol/${resultObject.key}`, // public URL
+          url: `https://${c.env.R2_DOMAIN}/${resultObject.key}`, // public URL
           size: resultObject.size, // bytes
           uploaded: resultObject.uploaded, // timestamp
           checksums: resultObject.checksums, // sha256 & md5

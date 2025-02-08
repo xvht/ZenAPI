@@ -20,3 +20,4 @@ bucket_name = 'zen'
 
 [vars]
 NODE_ENV = "production"
+R2_DOMAIN = "zen.xvh.lol"
